@@ -5,7 +5,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
   },
   {
     path: '/about',
@@ -15,7 +15,7 @@ const routes = [
   {
     path: '/studentDashboard',
     name: 'studentDashboard',
-    component: () => import(/* webpackChunkName: "studentDashboard" */ '../views/studentDashboard.vue')
+    component: () => import(/* webpackChunkName: "studentDashboard" */ '../views/studentDashboard.vue'),
   }
 ]
 

@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import Group, User
+from subject.serializers import SectionSerializers
 from rest_framework import serializers
 from .models import *
 
@@ -17,30 +18,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('url', 'username', 'email', 'is_staff', 'groups',)
 
 #Student Serializers
-
-class CategorySerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ('category',)
-
-class ModuleSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Module
-        fields = ('name', 'get_modules',)
-
-class SectionSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Section
-        fields = ('section_name', )
-
-class SubjectSerializers(serializers.ModelSerializer):
-        module = ModuleSerializers(read_only=True, many=True)
-        category = CategorySerializers(read_only=True, many=False)
-        section = SectionSerializers(read_only=True, many=False)
-        class Meta:
-            model = Subject
-            fields = ('name','get_photo', 'category', 'module', 'channel', 'section')
-
 class StudentSerializers(serializers.ModelSerializer):
     #get the source from object
     def getUsername(self, obj):
@@ -63,4 +40,4 @@ class StudentSerializers(serializers.ModelSerializer):
     section = SectionSerializers(read_only=True, many=False)
     class Meta:
         model = StudentUser
-        fields = ('user','username','email', 'lrn','first_name','last_name', 'section')
+        fields = ('user','username','email', 'lrn','first_name', 'get_photo', 'last_name', 'section')
