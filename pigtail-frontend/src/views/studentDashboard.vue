@@ -1,63 +1,67 @@
 <template>
-    <!-- START NAV -->
-    <section class="hero is-fullheight">
-        <div class="columns">
-            <aside class="column is-2" id="sidenav" >
-                <div class="menu">
-                    <ul class="menu-list">
-                        <li><a>Dashboard</a></li>
-                        <li><a>Timeline</a></li>
-                    </ul>
-                    <p class="menu-label">
-                        General
-                    </p>
-                    <ul class="menu-list">
-                        <li><a>Subject</a></li>
-                        <li><a>Grade Report</a></li>
-                    </ul>
-                    <p class="menu-label">
-                        Others
-                    </p>
-                    <ul class="menu-list">
-                        <li><a>Account</a></li>
-                        <li><a>Rewards</a></li>
-                    </ul>
-                </div>
-            </aside>
-            <div class="column is-fullwidth">
-                <div class="userPictures has-text-centered">
-                    <figure class="image is-128x128">
-                    <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
-                    </figure>
-                </div>
-                <div class="exp columns">
-                <div v-for="subject in subjects" :key="subject.id" class="card">
-                    <div class="card-image">
-                        <figure class="image is-fullwidth">
-                            <img v-bind:src="subject.get_photo" alt="Placeholder image">
-                     </figure>
-                    </div>
-                <div :class="subject.category.category" class="card-content">
-                    <div class="media">
-                    <div class="media-left">
-                    </div>
-                    <div class="media-content">
-                        <p class="title is-4">{{subject.name}}</p>
-                        <a class="is-6">{{subject.channel}}</a>
-                    </div>
-                    </div>
+ <w-app id="app" class="w-flex row">
+  <aside>
+    <div class="side-nav-header">
 
-                    <div class="content">
-                    
-                    </div>
+    </div>
+    <div class="side-nav-icon text-center">
+        <figure class="is-64x64">
+        <img class="side-nav-image is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+    </figure>
+    </div>
+    <hr class="navbar-divider">
+    <ul class="menu-list">
+        <li><a>Dashboard</a></li>
+        <li><a>Customers</a></li>
+    </ul>
+  </aside>
+  <w-flex column>
+    <header>
+        <div class="student-header">
+            <w-input class="mb2"
+            label="Search"
+            label-position="inside"
+            inner-icon-left="wi-search">
+            </w-input>
+        </div>
+    </header>
+    <main class="grow">
+        <w-flex wrap>
+            <div class="xs5 pa1">
+                <div class="py3">
+                    <w-card class="profile text-center"  no-border>
+                        <figure class="is-128x128">
+                            <img class=" profile-image is-rounded" v-bind:src="student.get_photo">
+                        </figure>
+                        <p>
+                         {{student.first_name}} {{student.last_name}}
+                        </p>
+                        <hr class="navbar-divider">
+                        <div class="list">
+                            <w-badge class="ml4 mr10" top right>
+                                <template #badge>3</template>
+                                <w-icon class="grey-light1" size="2.5em">mdi mdi-email</w-icon>
+                            </w-badge>
+                            <w-badge class="ml4 mr10" top right>
+                                <template #badge>7</template>
+                                <w-icon class="grey-light1" size="2.5em">mdi mdi-calendar-clock</w-icon>
+                            </w-badge>
+                        </div>
+                    </w-card>
                 </div>
             </div>
+            <div class="xs7 pa1">
+                <div class="py3">
+                    <w-card>
+                        <p></p>
+                    </w-card>
+                </div>
             </div>
-            </div>
-        </div>
-    </section>
-    
-   
+        </w-flex>
+    </main>
+    <footer>Footer</footer>
+  </w-flex>
+</w-app>
 </template>
 <script>
 import axios from 'axios'
@@ -72,11 +76,13 @@ export default{
     mounted() {
         this.getStudent()
         this.getSubject()
+        document.getElementById("page").className = "has-navbar";
+        document.body.style.backgroundColor = "whitesmoke";
     },
     methods:{
     async getStudent(){
-        axios
-       .get('/student/', {headers: {
+        await axios
+       .get('/subject/student/', {headers: {
            Authorization: "Bearer " + localStorage.getItem('accessToken')
            } 
         })
@@ -89,8 +95,8 @@ export default{
        })
     },
     async getSubject(){
-        axios
-        .get('/subject/', {headers: {
+        await axios
+        .get('/subject/subject/', {headers: {
            Authorization: "Bearer " + localStorage.getItem('accessToken')
            } 
         })
@@ -105,38 +111,33 @@ export default{
     } 
 }
 </script>
-<style>
-.card {
-    margin-right: 10px;
-    margin-top: 50px;
+<style lang="scss">
+.student-header{
+    background-color: white;
+    height: 40px;
+    
+}
+.student-header-image{
+    align-items: center;
+}
+.profile{
+    background-color: white;
+}
+.profile-image{
+    border-radius: 50%;
+    height: 128px;
+    width: 128px;
+    border: 3px solid blue;
+}
+.side-nav-header{
+    height: 40px;
     width: 100%;
-    max-height: 50%;
+    background-color: darkgreen;
+}
+.side-nav-image{
+     border-radius: 50%;
+     height: 64px;
+     width: 64px;
 }
 
-.Filipino{
-    border-color: yellow;
-    background: linear-gradient(to bottom, #33ccff 0%, #999966 100%);;
-}
-.Science {
-    border-color: green;
-    background: linear-gradient(to bottom, #33ccff 0%, #cc0066 100%);
-}
-.ArtsaAndLetters{
-    border-color: green;
-    background: linear-gradient(to bottom, #33ccff 0%, #660066 100%);
-}
-#sidenav{
-    height: 700px;
-    overflow: auto;
-    background-color: darkslategrey;
-}
-.userPictures{
-    height: 100px;
-    background-color: darkgrey;
-
-}
-.exp{
-    margin-top:10px ;
-    margin-right: 10px;
-}
 </style>

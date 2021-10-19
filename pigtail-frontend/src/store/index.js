@@ -20,7 +20,7 @@ export default createStore({
     userLogin (context, usercredentials){
       return new Promise((resolve, reject) => {
         axios
-        .post('/api-token/', {
+        .post('/account/api-token/', {
           username: usercredentials.username,
           password: usercredentials.password
         })
